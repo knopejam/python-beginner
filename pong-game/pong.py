@@ -33,7 +33,7 @@ paddle_b.shapesize(stretch_wid=5, stretch_len=1)
 paddle_b.penup()
 paddle_b.goto(350, 0)
 
-# ball
+# ball 1
 ball = turtle.Turtle()
 ball.speed(0)
 ball.shape("square")
@@ -44,6 +44,18 @@ ball.goto(0, 0)
 ball.dx = .25
 # move ball on y axis
 ball.dy = -.25
+
+# ball 2
+ball2 = turtle.Turtle()
+ball2.speed(0)
+ball2.shape("square")
+ball2.color("white")
+ball2.penup()
+ball2.goto(0, 0)
+# move ball on x axis
+ball2.dx = -.25
+# move ball on y axis
+ball2.dy = -.25
 
 # pen
 pen = turtle.Turtle()
@@ -94,8 +106,11 @@ while True:
    ball.setx(ball.xcor() + ball.dx)
    ball.sety(ball.ycor() + ball.dy)
 
-   # border checking
+   # ball 2
+   ball2.setx(ball2.xcor() + ball2.dx)
+   ball2.sety(ball2.ycor() + ball2.dy)
 
+   # border checking - ball 1
    # top border
    if ball.ycor() > 290:
       ball.sety(290)
@@ -125,8 +140,41 @@ while True:
       pen.clear()
       pen.write("player a: {}  player b: {}".format(score_a, score_b), align="center", font=("Courier", 24, "normal"))
       os.system('afplay "{}"&'.format(border_sound_path))
-   
-   # paddle and ball collisions
+
+   # border checking - ball 2
+   # top border
+   if ball2.ycor() > 290:
+      ball2.sety(290)
+      ball2.dy *= -1
+      os.system('afplay "{}"&'.format(border_sound_path))
+
+   # bottom border
+   if ball2.ycor() < -290:
+      ball2.sety(-290)
+      ball2.dy *= -1
+      os.system('afplay "{}"&'.format(border_sound_path))
+
+   # right border
+   if ball2.xcor() > 390:
+      ball2.goto(0, 0)
+      ball2.dx *= -1
+      score_a += 1
+      pen.clear()
+      pen.write("player a: {}  player b: {}".format(score_a, score_b),
+               align="center", font=("Courier", 24, "normal"))
+      os.system('afplay "{}"&'.format(border_sound_path))
+
+   # left border
+   if ball2.xcor() < -390:
+      ball2.goto(0, 0)
+      ball2.dx *= -1
+      score_b += 1
+      pen.clear()
+      pen.write("player a: {}  player b: {}".format(score_a, score_b),
+         align="center", font=("Courier", 24, "normal"))
+      os.system('afplay "{}"&'.format(border_sound_path))
+
+   # paddle and ball collisions - ball 1
    if (ball.xcor() > 340 and ball.xcor() < 350) and (ball.ycor() < paddle_b.ycor() + 40 and ball.ycor() > paddle_b.ycor() - 40):
       ball.setx(340)
       ball.dx *= -1
@@ -136,9 +184,27 @@ while True:
       ball.setx(-340)
       ball.dx *= -1
       os.system('afplay "{}"&'.format(paddle_sound_path))
+   
+   # paddle and ball collisions - ball 2
+   if (ball2.xcor() > 340 and ball2.xcor() < 350) and (ball2.ycor() < paddle_b.ycor() + 40 and ball2.ycor() > paddle_b.ycor() - 40):
+      ball2.setx(340)
+      ball2.dx *= -1
+      os.system('afplay "{}"&'.format(paddle_sound_path))
+
+   if (ball2.xcor() < -340 and ball2.xcor() > -350) and (ball2.ycor() < paddle_a.ycor() + 40 and ball2.ycor() > paddle_a.ycor() - 40):
+      ball2.setx(-340)
+      ball2.dx *= -1
+      os.system('afplay "{}"&'.format(paddle_sound_path))
 
    # AI player
-   if paddle_b.ycor() < ball.ycor() and abs(paddle_b.ycor() - ball.ycor()) > 10:
-      paddle_b_up()
-   elif paddle_b.ycor() > ball.ycor() and abs(paddle_b.ycor() - ball.ycor()) > 10:
-      paddle_b_down()
+   if ball.xcor() > ball2.xcor():
+      if paddle_b.ycor() < ball.ycor() and abs(paddle_b.ycor() - ball.ycor()) > 10:
+         paddle_b_up()
+      elif paddle_b.ycor() > ball.ycor() and abs(paddle_b.ycor() - ball.ycor()) > 10:
+         paddle_b_down()
+   else:
+      if ball.xcor() < ball2.xcor():
+         if paddle_b.ycor() < ball2.ycor() and abs(paddle_b.ycor() - ball2.ycor()) > 10:
+            paddle_b_up()
+         elif paddle_b.ycor() > ball2.ycor() and abs(paddle_b.ycor() - ball2.ycor()) > 10:
+            paddle_b_down()
