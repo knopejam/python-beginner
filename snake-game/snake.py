@@ -3,7 +3,11 @@ import turtle
 import time
 import random
 
-delay = 0.2
+delay = 0.1
+
+# score
+score = 0
+high_score = 0
 
 # set up screen
 wn = turtle.Screen()
@@ -44,9 +48,19 @@ food.penup()
 # starting point
 food.goto(0, 100)
 
-# list
+# segments of body list
 # next piece of body
 segments = []
+
+# pen
+pen = turtle.Turtle()
+pen.speed(0)
+pen.shape("square")
+pen.color("white")
+pen.penup()
+pen.hideturtle()
+pen.goto(0, 260)
+pen.write("Score: 0  High Score: 0", align="center", font=("Courier", 24, "normal"))
 
 # game functions
 # move up
@@ -124,7 +138,15 @@ while True:
       # clear the segments
       segments.clear()
 
-   # measure distance between snake head and food
+      # reset score
+      score = 0
+
+      pen.clear()
+      pen.write("Score: {}   High Score: {}".format(
+      score, high_score), align="center", font=("Courier", 24, "normal"))
+
+
+   # check for collision between head and food
    # if the distance between the head and the food is 20:
    if head.distance(food) < 20:
       # move food to random spot of screen
@@ -140,6 +162,19 @@ while True:
       new_segment.penup()
       # append new_segment to segment list
       segments.append(new_segment)
+
+      # shorten the delay
+      delay -= 0.001
+
+      # increase the score
+      score += 10
+
+      if score > high_score:
+         high_score = score
+
+      pen.clear()
+      pen.write("Score: {}   High Score: {}".format(
+      score, high_score), align="center", font=("Courier", 24, "normal"))
 
    # move the end segments first in reverse order
    for index in range(len(segments) - 1, 0, -1):
@@ -168,6 +203,17 @@ while True:
 
          # clear the segments
          segments.clear()
+
+         # reset score
+         score = 0
+
+         # reset the delay
+         delay = 0.1
+
+         # update the score display
+         pen.clear()
+         pen.write("Score: {}   High Score: {}".format(
+         score, high_score), align="center", font=("Courier", 24, "normal"))
 
    time.sleep(delay)
 
