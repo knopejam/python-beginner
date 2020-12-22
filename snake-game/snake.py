@@ -1,4 +1,6 @@
 # snake game
+# youtube tutorial: TokyoEdtech
+
 import turtle
 import time
 import random
