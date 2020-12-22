@@ -9,14 +9,20 @@ lives = 3
 
 wn = turtle.Screen()
 wn.title("Falling Sky by lindsive")
-wn.bgcolor("green")
+wn.bgcolor("blue")
 wn.setup(width=800, height=600)
 wn.tracer(0)
+
+wn.register_shape("sky-is-falling/sky-falling-img/person_left.gif")
+wn.register_shape("sky-is-falling/sky-falling-img/person_right.gif")
+wn.register_shape("sky-is-falling/sky-falling-img/veggie.gif")
+wn.register_shape("sky-is-falling/sky-falling-img/candy.gif")
+
 
 # add the player
 player = turtle.Turtle()
 player.speed(0)
-player.shape("square")
+player.shape("sky-is-falling/sky-falling-img/person_left.gif")
 player.color("white")
 player.penup()
 player.goto(0, -250)
@@ -29,7 +35,7 @@ good_guys = []
 for _ in range(20):
     good_guy = turtle.Turtle()
     good_guy.speed(0)
-    good_guy.shape("circle")
+    good_guy.shape("sky-is-falling/sky-falling-img/veggie.gif")
     good_guy.color("blue")
     good_guy.penup()
     good_guy.goto(100, 250)
@@ -43,7 +49,7 @@ bad_guys = []
 for _ in range(20):
     bad_guy = turtle.Turtle()
     bad_guy.speed(0)
-    bad_guy.shape("circle")
+    bad_guy.shape("sky-is-falling/sky-falling-img/candy.gif")
     bad_guy.color("red")
     bad_guy.penup()
     bad_guy.goto(0, 250)
@@ -65,9 +71,13 @@ pen.write("Score: {}  Lives: {}".format(score, lives), align="center", font=font
 # functions
 def go_left():
     player.direction = "left"
+    player.shape("sky-is-falling/sky-falling-img/person_left.gif")
+
 
 def go_right():
     player.direction = "right"
+    player.shape("sky-is-falling/sky-falling-img/person_right.gif")
+
 
 # keyboard binding
 wn.listen()
@@ -103,7 +113,7 @@ while True:
             good_guy.goto(x, y)
 
         # check for a collision with the player
-        if good_guy.distance(player) < 20:
+        if good_guy.distance(player) < 40:
             x = random.randint(-380, 380)
             y = random.randint(300, 400)
             good_guy.goto(x, y)
@@ -125,7 +135,7 @@ while True:
             bad_guy.goto(x, y)
 
         # check for a collision with the player
-        if bad_guy.distance(player) < 20:
+        if bad_guy.distance(player) < 40:
             x = random.randint(-380, 380)
             y = random.randint(300, 400)
             bad_guy.goto(x, y)
