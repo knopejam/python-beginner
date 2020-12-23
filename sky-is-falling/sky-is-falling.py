@@ -3,6 +3,8 @@
 
 import turtle
 import random
+import os
+import time
 
 score = 0
 lives = 3
@@ -144,5 +146,19 @@ while True:
             pen.clear()
             pen.write("Score: {}  Lives: {}".format(
                 score, lives), align="center", font=font)
+            time.sleep(1)
+            for bad_guy in bad_guys:
+                bad_guy.goto(random.randint(-300, 300), random.randint(400, 800))
+
+    # check for game over
+    if lives == 0:
+        pen.clear()
+        pen.write("Game Over!  Score: {}".format(score), align="center", font=("Courier", 24, "normal"))
+        time.sleep(5)
+        score = 0
+        lives = 3
+        pen.clear()
+        pen.write("Score: {}  Lives: {}".format(score, lives),
+                align="center", font=("Courier", 24, "normal"))
 
 wn.mainloop()
